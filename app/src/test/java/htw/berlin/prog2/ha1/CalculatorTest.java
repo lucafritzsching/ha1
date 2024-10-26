@@ -105,7 +105,53 @@ class CalculatorTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    @DisplayName("should correctly handle sequential operations without pressing equal key")
+    void testSequentialOperation() {
+        Calculator calc = new Calculator();
 
+        calc.pressDigitKey(2);
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(1);
+        calc.pressBinaryOperationKey("-");
+        calc.pressDigitKey(2);
+        calc.pressEqualsKey();
+
+        String expected = "1";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("should require two clears to fully reset after equals")
+    void testClearMaintainsOperation() {
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(6);
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(4);
+        calc.pressEqualsKey();
+
+        String expectedAfterEquals = "10";
+        assertEquals(expectedAfterEquals, calc.readScreen());
+
+        calc.pressClearKey();
+        String expectedAfterFirstClear = "0";
+        assertEquals(expectedAfterFirstClear, calc.readScreen());
+
+        calc.pressDigitKey(5);
+        calc.pressEqualsKey();
+        String expectedAfterUsingRetainedResult = "15";
+        assertEquals(expectedAfterUsingRetainedResult, calc.readScreen());
+
+        calc.pressClearKey();
+        calc.pressDigitKey(3);
+        calc.pressEqualsKey();
+
+        String expectedAfterSecondClear = "3";
+        assertEquals(expectedAfterSecondClear, calc.readScreen());
+    }
 
 }
 
