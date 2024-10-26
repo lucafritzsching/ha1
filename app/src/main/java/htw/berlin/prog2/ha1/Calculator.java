@@ -59,11 +59,30 @@ public class Calculator {
      * auf dem Bildschirm angezeigt. Falls hierbei eine Division durch Null auftritt, wird "Error" angezeigt.
      * @param operation "+" für Addition, "-" für Substraktion, "x" für Multiplikation, "/" für Division
      */
-    public void pressBinaryOperationKey(String operation)  {
-        latestValue = Double.parseDouble(screen);
-        latestOperation = operation;
-    }
+    public void pressBinaryOperationKey(String operation) {
+        double currentValue = Double.parseDouble(screen);
 
+        if (latestOperation.equals("/") && currentValue == 0) {
+            screen = "Error";
+            latestOperation = "";
+            return;
+        }
+
+        if (!latestOperation.isEmpty()) {
+            latestValue = switch (latestOperation) {
+                case "+" -> latestValue + currentValue;
+                case "-" -> latestValue - currentValue;
+                case "x" -> latestValue * currentValue;
+                case "/" -> latestValue / currentValue;
+                default -> throw new IllegalArgumentException("Unknown operation: " + latestOperation);
+            };
+        } else {
+            latestValue = currentValue;
+        }
+
+        latestOperation = operation;
+        screen = "0";
+    }
     /**
      * Empfängt den Wert einer gedrückten unären Operationstaste, also eine der drei Operationen
      * Quadratwurzel, Prozent, Inversion, welche nur einen Operanden benötigen.
