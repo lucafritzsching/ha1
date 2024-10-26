@@ -152,6 +152,5 @@ class CalculatorTest {
         String expectedAfterSecondClear = "3";
         assertEquals(expectedAfterSecondClear, calc.readScreen());
     }
-
 }
 

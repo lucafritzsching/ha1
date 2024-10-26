@@ -14,6 +14,8 @@ public class Calculator {
 
     private String latestOperation = "";
 
+    private boolean isPartialClear;
+
     /**
      * @return den aktuellen Bildschirminhalt als String
      */
@@ -45,9 +47,15 @@ public class Calculator {
      * im Ursprungszustand ist.
      */
     public void pressClearKey() {
-        screen = "0";
-        latestOperation = "";
-        latestValue = 0.0;
+        if (isPartialClear) {
+            screen = "0";
+            latestOperation = "";
+            latestValue = 0.0;
+            isPartialClear = false;
+        } else {
+            screen = "0";
+            isPartialClear = true;
+        }
     }
 
     /**
@@ -82,6 +90,7 @@ public class Calculator {
 
         latestOperation = operation;
         screen = "0";
+        isPartialClear = false;
     }
     /**
      * Empfängt den Wert einer gedrückten unären Operationstaste, also eine der drei Operationen
